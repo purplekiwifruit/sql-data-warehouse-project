@@ -19,7 +19,7 @@ Usage:
 -- =============================================================================
 IF OBJECT_ID('gold.dim_customers', 'V') IS NOT NULL
     DROP VIEW gold.dim_customers;
-
+Go
 CREATE VIEW gold.dim_customers AS
 SELECT
 	ROW_NUMBER() OVER (ORDER BY cst_id) AS customer_key,  -- Surrogate key
@@ -39,14 +39,14 @@ LEFT JOIN SILVER.erp_cust_az12 B
 ON A.cst_key = B.cid
 LEFT JOIN SILVER.erp_loc_a101 C
 ON A.cst_key = C.cid
-
+Go
   
 -- =============================================================================
 -- Create Dimension: gold.dim_products
 -- =============================================================================
 IF OBJECT_ID('gold.dim_products', 'V') IS NOT NULL
     DROP VIEW gold.dim_products;
-
+Go
 CREATE VIEW gold.dim_products AS
 SELECT 
 ROW_NUMBER() OVER(ORDER BY A.prd_start_dt) AS product_key,   -- Surrogate key
@@ -64,17 +64,17 @@ FROM silver.crm_prd_info A
 LEFT JOIN silver.erp_px_cat_g1v2 B
 ON A.cat_id = B.id
 WHERE A.prd_end_dt IS NULL -- Filter out all historical date
-
+Go
   
 -- =============================================================================
 -- Create Fact Table: gold.fact_sales
 -- =============================================================================
 IF OBJECT_ID('gold.fact_sales', 'V') IS NOT NULL
     DROP VIEW gold.fact_sales;
-
+Go
 CREATE VIEW gold.fact_sales AS
 SELECT
-	A.sls_ord_num AS order_numnber ,
+	A.sls_ord_num AS order_number ,
 	B.product_key, --Dimension Key
 	C.customer_key, --Dimension Key
 	A.sls_order_dt AS order_date,
@@ -88,3 +88,4 @@ LEFT JOIN gold.dim_products B
 ON A.sls_prd_key = B.product_number
 LEFT JOIN gold.dim_customers C
 ON A.sls_cust_id = C.customer_id
+Go
