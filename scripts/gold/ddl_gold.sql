@@ -25,7 +25,7 @@ SELECT
 	ROW_NUMBER() OVER (ORDER BY cst_id) AS customer_key,  -- Surrogate key
 	A.cst_id AS customer_id,
 	A.cst_key AS customer_number,
-	A.cst_firstname AS fist_name,
+	A.cst_firstname AS first_name,
 	A.cst_lastname AS last_name,
 	C.cntry AS country,
 	A.cst_material_status AS material_status,
